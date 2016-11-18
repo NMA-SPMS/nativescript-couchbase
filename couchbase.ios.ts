@@ -1,4 +1,5 @@
 declare var CBLManager: any;
+declare var CBLDatabaseOptions: any;
 declare var interop: any;
 declare var NSURL: any;
 declare var NSNotificationCenter: any;
@@ -12,15 +13,25 @@ export class Couchbase {
 
     private manager: any;
     private database: any;
+    private databaseOptions: any;
 
-    constructor(databaseName: String){
+    constructor(databaseName: String, encryptionKey?:string){
         this.manager = CBLManager.sharedInstance();
         if (!this.manager){
             console.log("MANAGER ERROR:Can not create share instance of CBLManager");
         }
         var errorRef = new interop.Reference();
-
-        this.database = this.manager.databaseNamedError(databaseName, errorRef);
+        if(!encryptionKey){
+            this.database = this.manager.databaseNamedError(databaseName, errorRef);
+        } else{
+            //this.database = this.manager.databaseNamedError(databaseName, errorRef);
+            this.databaseOptions =  CBLDatabaseOptions.alloc().init();
+            /*databaseOptions.storageType = "SQLite";
+            databaseOptions.encryptionKey = encryptionKey;
+            databaseOptions.create = true;*/
+            //this.database = this.manager.openDatabaseNamedError(databaseName, databaseOptions, errorRef);
+        }
+        
 
         if (!this.database){
           console.log(errorRef.value);

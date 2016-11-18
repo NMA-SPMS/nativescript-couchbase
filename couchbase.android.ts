@@ -11,11 +11,20 @@ export class Couchbase {
     private manager: any;
     private database: any;
 
-    constructor(databaseName: string) {
+    constructor(databaseName: string, encryptionKey?:string) {
         this.context = applicationModule.android.context;
         try {
             this.manager = new com.couchbase.lite.Manager(new com.couchbase.lite.android.AndroidContext(this.context), null);
-            this.database = this.manager.getDatabase(databaseName);
+            if(!encryptionKey){
+                this.database = this.manager.getDatabase(databaseName);
+            }else{
+                let databaseOptions:any = new com.couchbase.lite.DatabaseOptions();
+                databaseOptions.setCreate(true);
+                databaseOptions.setEncryptionKey(encryptionKey);
+                this.database = this.manager.openDatabase(databaseName, databaseOptions);
+            }
+            
+            
         } catch (exception) {
             console.error("MANAGER ERROR:", exception.message);
         }

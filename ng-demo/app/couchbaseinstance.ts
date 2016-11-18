@@ -11,7 +11,7 @@ export class CouchbaseInstance {
 
     constructor() {
         if(!this.isInstantiated) {
-            this.database = new Couchbase("test-database");
+            this.database = new Couchbase("test-database", "mypassword");
             this.database.createView("people", "1", (document, emitter) => {
                 emitter.emit(document._id, document);
             });

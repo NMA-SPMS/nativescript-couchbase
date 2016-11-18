@@ -1,0 +1,2 @@
+pod 'SQLCipher', '~> 3.4'
+pod 'couchbase-lite-ios', '~> 1.3'

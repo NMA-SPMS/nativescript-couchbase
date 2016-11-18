@@ -1,7 +1,7 @@
 declare module "nativescript-couchbase" {
 
     export class Couchbase {
-        constructor(databaseName: string);
+        constructor(databaseName: string, encryptionKey?:string);
         createDocument(data: Object, documentId?: string);
         getDocument(documentId: string);
         updateDocument(documentId: string, data: Object);
