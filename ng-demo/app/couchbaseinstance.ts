@@ -14,7 +14,6 @@ export class CouchbaseInstance {
     }
 
     closeDatabase(){
-
         return this.database.closeDatabase();
     }
 
@@ -22,8 +21,8 @@ export class CouchbaseInstance {
 
         this.database = new Couchbase(name,key);
         this.database.createView("people", "1", (document, emitter) => {
-                emitter.emit(document._id, document);
-            });
+            emitter.emit(document._id, document);
+        });
         return this.database;
     }
 

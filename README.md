@@ -150,3 +150,9 @@ database.addDatabaseChangeListener(function(changes) {
     }
 });
 ```
+
+## Plugin Development
+
+The Couchbase NativeScript plugin is under active development.  Changes to the API are infrequent in the underlying Couchbase Android and Couchbase iOS SDKs so as a result changes are infrequent in the JavaScript wrapper for NativeScript.
+
+If you feel something is missing or you've found a bug, open a ticket so it can be corrected or submit a pull request and be recognized for your contributions.
