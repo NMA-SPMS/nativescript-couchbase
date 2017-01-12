@@ -1,0 +1,19 @@
+<ActionBar title="Encription">
+    <NavigationButton text="Back" ios.position="left"></NavigationButton>
+    <ActionItem text="Save" (tap)="save()" ios.position="right"></ActionItem>
+</ActionBar>
+<StackLayout>
+    
+    <Label text="State: {{state}}" textWrap="true"></Label>
+    
+    <TextField #databasename hint="Database Name"></TextField>
+    <TextField #databasepassword hint="Database Password"></TextField>
+    <Button text="Open" (tap)="open(databasename.text, databasepassword.text)"></Button>
+    <Button text="Close" (tap)="close()"></Button>
+    <ScrollView height="300">
+        <StackLayout>
+            <Label *ngFor="let log of logs" text="{{log}}" textWrap="true"></Label>
+        </StackLayout>
+    </ScrollView>
+    
+</StackLayout>

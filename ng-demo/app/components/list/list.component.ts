@@ -1,4 +1,4 @@
-import {Component, NgZone} from "@angular/core";
+import { Component, NgZone, OnInit } from '@angular/core';
 import {Router} from "@angular/router";
 import {Location} from "@angular/common";
 import {CouchbaseInstance} from "../../couchbaseinstance";
@@ -7,20 +7,31 @@ import {CouchbaseInstance} from "../../couchbaseinstance";
     selector: "my-app",
     templateUrl: "./components/list/list.component.html",
 })
-export class ListComponent {
+export class ListComponent implements OnInit{
 
     private database: any;
     private router: Router;
     private ngZone: NgZone;
     public personList: Array<Object>;
 
-    constructor(router: Router, location: Location, ngZone: NgZone, couchbaseInstance: CouchbaseInstance) {
+    constructor(router: Router, location: Location, ngZone: NgZone,public couchbaseInstance: CouchbaseInstance) {
         this.router = router;
         this.ngZone = ngZone;
-        this.database = couchbaseInstance.getDatabase();
+        // this.database = couchbaseInstance.getDatabase();
         this.personList = [];
+         location.subscribe((path) => {
+            this.refresh();
+        });
+        
+    }
 
-        couchbaseInstance.startSync(true);
+    ngOnInit(){
+        if(!this.couchbaseInstance.getDatabase()){
+            this.database = this.couchbaseInstance.openDatabase("mypassword");
+        }else{
+            this.database = this.couchbaseInstance.getDatabase();
+        }
+        
 
         this.database.addDatabaseChangeListener((changes) => {
             let changeIndex;
@@ -38,9 +49,7 @@ export class ListComponent {
             }
         });
 
-        location.subscribe((path) => {
-            this.refresh();
-        });
+       
 
         this.refresh();
     }
@@ -49,12 +58,25 @@ export class ListComponent {
         this.router.navigate(["create"]);
     }
 
+    encryption(){
+        this.router.navigate(["encryption"]);
+    }
+
+    
+
+    
+
     private refresh() {
         this.personList = [];
-        let rows = this.database.executeQuery("people");
-        for(let i = 0; i < rows.length; i++) {
-            this.personList.push(rows[i]);
+        if(this.database){
+            let rows = this.database.executeQuery("people");
+            for(let i = 0; i < rows.length; i++) {
+                this.personList.push(rows[i]);
+            }
+        }else{
+            console.log("cant run database query on refresh, database is null");
         }
+        
     }
 
     private indexOfObjectId(needle: string, haystack: any) {

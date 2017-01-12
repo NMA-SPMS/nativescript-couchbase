@@ -13,14 +13,19 @@ export class Couchbase {
     private manager: any;
     private database: any;
 
-    constructor(databaseName: String){
+    constructor(databaseName: String, encryptionKey?:string){
         this.manager = CBLManager.sharedInstance();
         if (!this.manager){
             console.log("MANAGER ERROR:Can not create share instance of CBLManager");
         }
         var errorRef = new interop.Reference();
-
-        this.database = this.manager.databaseNamedError(databaseName, errorRef);
+        if(!encryptionKey){
+            this.database = this.manager.databaseNamedError(databaseName, errorRef);
+        } else {
+            this.database = this.manager.registerEncryptionKeyForDatabaseNamed(databaseName, encryptionKey);
+            this.database = this.manager.databaseNamedError(databaseName, errorRef);
+        }
+        
 
         if (!this.database){
           console.log(errorRef.value);
@@ -186,6 +191,10 @@ export class Couchbase {
         if (!errorRef){
           console.error("DESTROY", errorRef.value);
         }
+    }
+
+    closeDatabase(){
+        return this.database.close();
     }
 
     private mapToJson(properties: Object){

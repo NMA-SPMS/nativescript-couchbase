@@ -1,12 +1,14 @@
 declare module "nativescript-couchbase" {
 
     export class Couchbase {
-        constructor(databaseName: string);
+        constructor(databaseName: string, encryptionKey?: string);
         createDocument(data: Object, documentId?: string);
         getDocument(documentId: string);
         updateDocument(documentId: string, data: Object);
         deleteDocument(documentId: string);
         destroyDatabase();
+        closeDatabase():boolean;
+        openDatabase(name: string, key?: string);
         createView(viewName: string, viewRevision: string, callback: any);
         executeQuery(viewName: string, options?: any);
         createPullReplication(remoteUrl: string);

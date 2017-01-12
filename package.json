@@ -20,6 +20,7 @@
     "android-angular": "npm run prepare-angular; cd ng-demo; tns run android",
     "android-vanilla": "npm run prepare-vanilla; cd demo; tns run android",
     "ios-angular": "npm run prepare-angular; cd ng-demo; tns emulate ios",
+    "ios-angular-deploy": "npm run prepare-angular; cd ng-demo; tns deploy ios",
     "ios-vanilla": "npm run prepare-vanilla; cd demo; tns emulate ios"
   },
   "repository": {
